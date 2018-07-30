@@ -63,6 +63,7 @@ def _testfile(nbpath):
     """
     Creates a path where to place a testing notebook.
     New file with have `-test.ipynb` at the end and is placed in `/tmp` dir.
+    We place it in tmp such that a docker container can write there.
     :param nbpath: Path to the notebook that needs to be tested.
     """
     return '/tmp/' + nbpath.replace(".ipynb", "-test.ipynb")
@@ -122,15 +123,10 @@ def test_notebook(nbpath):
 
 def main():
     fire.Fire({
-        'make_testable_notebook': make_testable_notebook,
-        'test_notebook': test_notebook,
-        'clean-nb': clean_notebook
+        'test': test_notebook,
+        'clean': clean_notebook
     })
 
 
 if __name__ == "__main__":
-    fire.Fire({
-        'make_testable_notebook': make_testable_notebook,
-        'test_notebook': test_notebook,
-        'clean-nb': clean_notebook
-    })
+    main()
