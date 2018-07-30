@@ -21,7 +21,7 @@ feature we wanted in this app is that we had a nice way to:
 Installation currently needs to occur via git. 
 
 ```bash
-> pip install git+ssh://git@github.com/godatadriven/gddnb
+> pip install git+ssh://git@github.com/godatadriven/asekuro
 ```
 
 # Usage 

@@ -122,15 +122,10 @@ def test_notebook(nbpath):
 
 def main():
     fire.Fire({
-        'make_testable_notebook': make_testable_notebook,
-        'test_notebook': test_notebook,
+        'test-notebook': test_notebook,
         'clean-nb': clean_notebook
     })
 
 
 if __name__ == "__main__":
-    fire.Fire({
-        'make_testable_notebook': make_testable_notebook,
-        'test_notebook': test_notebook,
-        'clean-nb': clean_notebook
-    })
+    main()
