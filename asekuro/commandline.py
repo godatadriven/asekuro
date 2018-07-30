@@ -123,8 +123,8 @@ def test_notebook(nbpath):
 
 def main():
     fire.Fire({
-        'test-notebook': test_notebook,
-        'clean-nb': clean_notebook
+        'test': test_notebook,
+        'clean': clean_notebook
     })
 
 

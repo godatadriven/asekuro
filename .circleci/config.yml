@@ -33,7 +33,8 @@ jobs:
          name: check help outputs of commandline
          command: |
             . venv/bin/activate
-            asekuro test-notebook tests/testnb.ipynb
+            asekuro test tests/testnb.ipynb
+            asekuro clean tests/testnb.ipynb
 
       - store_artifacts:
           path: test-reports

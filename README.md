@@ -34,7 +34,7 @@ We merely test if the notebook can be run from top to bottom without any
 errors. This may be dependant on the virtualenv that you're currently running.
 
 ```bash
-> asekuro test-notebook tests/testnb.ipynb
+> asekuro test tests/testnb.ipynb
 2018-07-30 15:40:04,060 [commandline.py:test_notebook:113] DEBUG - about to test tests/testnb.ipynb
 ...
 2018-07-30 15:40:04,074 [commandline.py:clean_notebook:82] DEBUG - /tmp/testnb-test.ipynb is now stripped
@@ -62,7 +62,7 @@ tmp/testnb-test::ipynb::Cell 5 PASSED                                        [10
 Sometimes you may want to remove the output of the cells. This can be done automatically now too. 
 
 ```
-> asekuro clean-nb tests/testnb.ipynb 
+> asekuro clean tests/testnb.ipynb 
 2018-07-30 15:44:23,508 [commandline.py:clean_notebook:76] DEBUG - about to strip tests/testnb.ipynb of output
 2018-07-30 15:44:23,516 [commandline.py:clean_notebook:82] DEBUG - tests/testnb.ipynb is now stripped
 ```
