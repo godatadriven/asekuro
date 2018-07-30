@@ -27,13 +27,13 @@ jobs:
           command: |
             . venv/bin/activate
             python setup.py install
-            gddnb
+            asekuro
 
       - run:
          name: check help outputs of commandline
          command: |
             . venv/bin/activate
-            gddnb test-notebook tests/testnb.ipynb
+            asekuro test-notebook tests/testnb.ipynb
 
       - store_artifacts:
           path: test-reports
