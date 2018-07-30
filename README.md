@@ -2,7 +2,9 @@
 
 # Asekuro
 
-> A commandline util for jupyter notebooks, possibly to be used in trainings. 
+A commandline util for jupyter notebooks, possibly to be used in trainings and/or githooks.
+
+> Asekuro means insurance in esperanto. 
 
 ![](notebook-img.png)
 
