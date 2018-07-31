@@ -66,7 +66,7 @@ def _testfile(nbpath):
     We place it in tmp such that a docker container can write there.
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    return '/tmp/' + nbpath.replace(".ipynb", "-test.ipynb")
+    return nbpath.replace(".ipynb", "-test.ipynb")
 
 
 def clean_notebook(nbpath):
