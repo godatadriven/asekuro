@@ -8,8 +8,6 @@ jobs:
 
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
 
       - run:
           name: confirm files
@@ -21,6 +19,9 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install --upgrade pip ipython jupyter
+
+      - setup_remote_docker:
+          docker_layer_caching: true
 
       - run:
           name: run virtualenv and install commandline
