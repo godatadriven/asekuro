@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='gddnb',
+    name='asekuro',
     version='0.0.2',
     entry_points={
         'console_scripts': [

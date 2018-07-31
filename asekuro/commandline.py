@@ -11,7 +11,7 @@ logging.basicConfig(
     format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s',
     handlers=[stdout_handler]
 )
-logger = logging.getLogger('gdd nb util')
+logger = logging.getLogger('asekuro')
 
 
 def _cwd(nbpath):
