@@ -30,11 +30,12 @@ jobs:
             asekuro
 
       - run:
-         name: check help outputs of commandline
+         name: check help outputs of commandline and run pytests
          command: |
             . venv/bin/activate
             pytest
             asekuro test tests/good-nb.ipynb
+            asekuro test tests/data-nb.ipynb
 
       - store_artifacts:
           path: test-reports
