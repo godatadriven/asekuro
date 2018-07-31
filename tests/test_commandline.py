@@ -9,4 +9,4 @@ class TestCommandLine:
 
     def test_bad_bn(self):
         status = subprocess.call(['asekuro', 'test', 'tests/bad-nb.ipynb'])
-        assert status == 1
+        assert status == 2
