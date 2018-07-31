@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='asekuro',
-    version='0.0.2',
+    version='0.0.3',
     entry_points={
         'console_scripts': [
             'asekuro = asekuro.commandline:main',
