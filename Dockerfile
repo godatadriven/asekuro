@@ -2,7 +2,7 @@ FROM jupyter/scipy-notebook
 
 USER root
 COPY . .
-RUN pip install -r requirements.txt
+
 RUN python setup.py install
 
 # we test the notebooks.
