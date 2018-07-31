@@ -21,18 +21,6 @@ jobs:
             pip install --upgrade pip
             pip install -r requirements.txt
 
-      - setup_remote_docker:
-          docker_layer_caching: true
-
-      - save_cache:
-          key: v1-dependencies-{{ checksum "requirements.txt" }}
-          paths:
-              - venv
-
-      - restore_cache:
-          keys:
-              - v1-dependencies-{{ checksum "requirements.txt" }}
-
       - run:
           name: run virtualenv and install commandline
           command: |
