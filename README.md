@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/godatadriven/gddnb.svg?style=svg&circle-token=b5a952961638dbbd272affda821e300d9542e04c)](https://circleci.com/gh/godatadriven/gddnb)
+[![CircleCI](https://circleci.com/gh/godatadriven/asekuro.svg?style=svg)](https://circleci.com/gh/godatadriven/asekuro)
 
 # Asekuro
 
@@ -40,7 +40,7 @@ errors. This may be dependant on the virtualenv that you're currently running.
 2018-07-30 15:40:04,074 [commandline.py:clean_notebook:82] DEBUG - /tmp/testnb-test.ipynb is now stripped
 ============== test session starts =======================================================================
 platform darwin -- Python 3.6.5, pytest-3.6.4, py-1.5.4, pluggy-0.7.1 -- 
-/Users/coder/path/gddnb/venv/bin/python
+/Users/coder/path/asekuro/venv/bin/python
 cachedir: ../../../../../tmp/.pytest_cache
 rootdir: /tmp, inifile:
 plugins: nbval-0.9.1
