@@ -48,5 +48,4 @@ class TestDockerBuild:
 
     def test_docker_build_fails(self):
         status = subprocess.call(['docker', 'build', '-t', 'asekurodock', '.'])
-        print(status)
         assert status == 2

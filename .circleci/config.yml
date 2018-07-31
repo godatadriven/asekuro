@@ -33,7 +33,7 @@ jobs:
          name: check help outputs of commandline and run pytests
          command: |
             . venv/bin/activate
-            pytest
+            pytest --verbose
             asekuro test tests/good-nb.ipynb
             asekuro test tests/data-nb.ipynb
 

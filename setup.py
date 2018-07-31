@@ -1,13 +1,17 @@
+import asekuro
 from setuptools import setup, find_packages
 
 setup(
     name='asekuro',
-    version='0.0.3',
+    version=asekuro.__version__,
+    description='CLI util to deal with Jupyter Notebooks',
+    author=['Vincent D. Warmerdam'],
     entry_points={
         'console_scripts': [
             'asekuro = asekuro.commandline:main',
         ],
     },
+    url='https://github.com/godatadriven/asekuro',
     packages=find_packages(),
     install_requires=['pytest==3.7.0',
                       'nbval==0.9.1',
