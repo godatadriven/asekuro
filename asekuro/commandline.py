@@ -121,7 +121,7 @@ def test_notebook(nbpath):
     logger.debug(f"testing done for {nbpath}")
     if status == 1:
         logger.debug(f"error was found so exiting with error code 1")
-        sys.exit(1)
+        sys.exit(2)
 
 
 def main():
