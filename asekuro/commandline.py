@@ -62,8 +62,7 @@ def _strip_output(nb):
 def _testfile(nbpath):
     """
     Creates a path where to place a testing notebook.
-    New file with have `-test.ipynb` at the end and is placed in `/tmp` dir.
-    We place it in tmp such that a docker container can write there.
+    New file with have `-test.ipynb` at the end and is placed in same dir.
     :param nbpath: Path to the notebook that needs to be tested.
     """
     return nbpath.replace(".ipynb", "-test.ipynb")

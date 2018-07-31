@@ -1,10 +1,6 @@
 FROM jupyter/scipy-notebook
 
-WORKDIR /tmp
-RUN ls -lhat
 COPY . .
-RUN ls -lhat
-RUN pwd
 
 RUN pip install -r requirements.txt
 
