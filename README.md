@@ -20,9 +20,11 @@ feature we wanted in this app is that we had a nice way to:
 
 Installation currently needs to occur via git. 
 
-```bash
-> pip install git+https://github.com/godatadriven/asekuro.git
 ```
+> pip install asekuro
+```
+
+Note that we only support python 3. 
 
 # Usage 
 
