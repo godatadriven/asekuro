@@ -66,3 +66,8 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 2018-07-30 15:44:23,508 [commandline.py:clean_notebook:76] DEBUG - about to strip tests/testnb.ipynb of output
 2018-07-30 15:44:23,516 [commandline.py:clean_notebook:82] DEBUG - tests/testnb.ipynb is now stripped
 ```
+
+#### Testing 
+
+You can run some unit tests via `pytest`. Note that we test using local notebooks 
+as well as a docker container. We want the container that is there to break the build. 
