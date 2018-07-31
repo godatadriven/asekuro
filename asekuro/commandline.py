@@ -24,6 +24,8 @@ def _cwd(nbpath):
     logger.debug(f"directory of script calling {os.getcwd()}")
     folder = os.path.dirname(nbpath)
     filename = os.path.basename(nbpath)
+    if folder == "":
+        folder = os.getcwd()
     os.chdir(folder)
     logger.debug(f"directory for rest of script {os.getcwd()}")
     return folder, filename
