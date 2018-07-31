@@ -26,6 +26,8 @@ jobs:
 
       - save_cache:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
+          paths:
+              - venv
 
       - restore_cache:
           keys:
