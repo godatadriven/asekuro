@@ -115,10 +115,13 @@ def test_notebook(nbpath):
     folder, filename = _cwd(nbpath)
     make_testable_notebook(nbpath=filename)
     clean_notebook(nbpath=_testfile(filename))
-    subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
+    status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
     logger.debug(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
     os.remove(_testfile(nbpath=filename))
     logger.debug(f"testing done for {nbpath}")
+    if status == 1:
+        logger.debug(f"error was found so exiting with error code 1")
+        sys.exit(1)
 
 
 def main():
