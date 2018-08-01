@@ -35,7 +35,7 @@ Once installed, the commandline app can be used.
 We merely test if the notebook can be run from top to bottom without any 
 errors. This may be dependant on the virtualenv that you're currently running.
 
-```bash
+```
 > asekuro test tests/testnb.ipynb
 2018-07-30 15:40:04,060 [commandline.py:test_notebook:113] DEBUG - about to test tests/testnb.ipynb
 ...

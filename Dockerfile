@@ -2,12 +2,12 @@ FROM jupyter/scipy-notebook
 
 USER root
 COPY . .
-RUN pip install -r requirements.txt
+
 RUN python setup.py install
 
-# we test the notebooks.
-RUN asekuro test tests/data-nb.ipynb
-# we really want this to break beause of the second notebook
+# we really want this to break beause of this notebook
 RUN asekuro test tests/bad-nb.ipynb
+
 # we shouldn't see it come here
+RUN asekuro test tests/data-nb.ipynb
 RUN asekuro test tests/good-nb.ipynb

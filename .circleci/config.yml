@@ -8,22 +8,24 @@ jobs:
 
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: true
 
       - run:
           name: confirm files
           command: ls
+
+      - setup_remote_docker:
+          docker_layer_caching: true
 
       - run:
           name: make virtualenv and install some deps
           command: |
             python3 -m venv venv
             . venv/bin/activate
-            pip install --upgrade pip ipython jupyter
+            pip install --upgrade pip
+            pip install -r requirements.txt
 
       - run:
-          name: run virtualenv and install commandline
+          name: run virtualenv and install commandline + run it
           command: |
             . venv/bin/activate
             python setup.py install
@@ -33,9 +35,13 @@ jobs:
          name: check help outputs of commandline and run pytests
          command: |
             . venv/bin/activate
-            pytest --verbose
-            asekuro test tests/good-nb.ipynb
-            asekuro test tests/data-nb.ipynb
+            pytest --verbose tests/test_commandline.py
+
+      - run:
+         name: test within a docker container for good measure
+         command: |
+            . venv/bin/activate
+            pytest --verbose tests/test_docker.py
 
       - store_artifacts:
           path: test-reports
