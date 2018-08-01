@@ -13,6 +13,9 @@ jobs:
           name: confirm files
           command: ls
 
+      - setup_remote_docker:
+          docker_layer_caching: true
+
       - run:
           name: make virtualenv and install some deps
           command: |
@@ -22,7 +25,7 @@ jobs:
             pip install -r requirements.txt
 
       - run:
-          name: run virtualenv and install commandline
+          name: run virtualenv and install commandline + run it
           command: |
             . venv/bin/activate
             python setup.py install
@@ -33,8 +36,6 @@ jobs:
          command: |
             . venv/bin/activate
             pytest --verbose tests/test_commandline.py
-            asekuro test tests/good-nb.ipynb
-            asekuro test tests/data-nb.ipynb
 
       - run:
          name: test within a docker container for good measure
