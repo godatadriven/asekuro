@@ -23,6 +23,7 @@ setup(
     },
     url='https://github.com/godatadriven/asekuro',
     packages=find_packages(),
+    python_requires='>=3.6',
     install_requires=['pytest==3.7.0',
                       'nbval==0.9.1',
                       'fire==0.1.3',
