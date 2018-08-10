@@ -29,5 +29,13 @@ setup(
                       'nbformat==4.4.0',
                       'ipython==6.5.0',
                       'jupyter-client==5.2.3',
-                      'jupyter-core==4.4.0']
+                      'jupyter-core==4.4.0'],
+    classifiers=['Topic :: Software Development :: Build Tools',
+                 'Topic :: Utilities',
+                 'Framework :: Jupyter',
+                 'Intended Audience :: Developers',
+                 'Intended Audience :: Science/Research',
+                 'Programming Language :: Python :: 3.6',
+                 'Development Status :: 3 - Alpha',
+                 'License :: OSI Approved :: MIT License']
 )
