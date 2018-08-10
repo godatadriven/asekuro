@@ -15,6 +15,7 @@ setup(
     description='CLI util to deal with Jupyter Notebooks',
     long_description=load_readme(),
     long_description_content_type='text/markdown',
+    license='MIT License',
     author=['Vincent D. Warmerdam'],
     entry_points={
         'console_scripts': [
