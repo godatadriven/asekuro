@@ -8,7 +8,6 @@ def load_readme():
     with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
         return f.read()
 
-
 setup(
     name='asekuro',
     version=asekuro.__version__,
@@ -16,7 +15,7 @@ setup(
     long_description=load_readme(),
     long_description_content_type='text/markdown',
     license='MIT License',
-    author=['Vincent D. Warmerdam'],
+    author='Vincent D. Warmerdam',
     entry_points={
         'console_scripts': [
             'asekuro = asekuro.commandline:main',
