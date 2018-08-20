@@ -29,7 +29,7 @@ class TestPathHandlingLocal:
         assert status == 2
 
 
-class TestCommandLineOuter:
+class TestCommandLineWorksWithPath:
 
     def test_good_nb(self):
         status = subprocess.call(['asekuro', 'test', 'tests/good-nb.ipynb'])
