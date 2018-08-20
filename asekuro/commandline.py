@@ -122,10 +122,6 @@ def test_notebook(nbpath):
 
 
 def main():
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
-    )
     fire.Fire({
         'test': test_notebook,
         'clean': clean_notebook
@@ -133,4 +129,8 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    )
     main()
