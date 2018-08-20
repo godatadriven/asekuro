@@ -5,6 +5,7 @@ import logging
 import sys
 import os
 
+
 def _cwd(nbpath):
     """
     Changes the current working directory, relative to jupyter notebook path.
@@ -12,13 +13,14 @@ def _cwd(nbpath):
     We also return the folder and filename of the path.
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logging.debug(f"directory of script calling {os.getcwd()}")
+    logger = logging.getLogger(__name__)
+    logger.debug(f"directory of script calling {os.getcwd()}")
     folder = os.path.dirname(nbpath)
     filename = os.path.basename(nbpath)
     if folder == "":
         folder = os.getcwd()
     os.chdir(folder)
-    logging.debug(f"directory for rest of script {os.getcwd()}")
+    logger.debug(f"directory for rest of script {os.getcwd()}")
     return folder, filename
 
 
@@ -66,13 +68,14 @@ def clean_notebook(nbpath):
     Takes a notebook file on disk and removes all cell output.
     :param nbpath: Path to the notebook that needs to be cleaned of output.
     """
-    logging.debug(f"about to strip {nbpath} of output")
+    logger = logging.getLogger(__name__)
+    logger.debug(f"about to strip {nbpath} of output")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
     notebook = _strip_output(notebook)
     with open(nbpath, 'w', encoding='utf8') as f:
         nbformat.write(notebook, f)
-    logging.debug(f"{nbpath} is now stripped")
+    logger.debug(f"{nbpath} is now stripped")
 
 
 def make_testable_notebook(nbpath):
@@ -80,19 +83,20 @@ def make_testable_notebook(nbpath):
     Creates a new notebook that is ready for testing. New file with have `-test.ipynb` at the end.
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logging.debug(f"about to prepare {nbpath} for testing")
+    logger = logging.getLogger(__name__)
+    logger.debug(f"about to prepare {nbpath} for testing")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
     for cell in _cells(notebook):
         if cell['cell_type'] == 'code':
             if '%load' in cell['source']:
-                logging.debug(f'found %load-magic in cell with id={cell["execution_count"]}')
-                logging.debug(cell['source'])
+                logger.debug(f'found %load-magic in cell with id={cell["execution_count"]}')
+                logger.debug(cell['source'])
                 py_path = cell['source'].replace('%load ', '')
                 with open(py_path, 'r') as f:
                     cell['source'] = f.read()
     nbformat.write(notebook, open(_testfile(nbpath=nbpath), mode='w'))
-    logging.debug(f"wrote notebook ready for testing over at {_testfile(nbpath=nbpath)}")
+    logger.debug(f"wrote notebook ready for testing over at {_testfile(nbpath=nbpath)}")
 
 
 def test_notebook(nbpath):
@@ -103,20 +107,25 @@ def test_notebook(nbpath):
     - remove said temporary test file
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logging.debug(f"about to test {nbpath}")
+    logger = logging.getLogger(__name__)
+    logger.debug(f"about to test {nbpath}")
     folder, filename = _cwd(nbpath)
     make_testable_notebook(nbpath=filename)
     clean_notebook(nbpath=_testfile(filename))
     status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
-    logging.debug(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
+    logger.debug(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
     os.remove(_testfile(nbpath=filename))
-    logging.debug(f"testing done for {nbpath}")
+    logger.debug(f"testing done for {nbpath}")
     if status == 1:
-        logging.debug(f"error was found so exiting with error code 1")
+        logger.debug(f"error was found so exiting with error code 1")
         sys.exit(2)
 
 
 def main():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    )
     fire.Fire({
         'test': test_notebook,
         'clean': clean_notebook
