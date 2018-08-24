@@ -5,14 +5,6 @@ import logging
 import sys
 import os
 
-stdout_handler = logging.StreamHandler(sys.stdout)
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s',
-    handlers=[stdout_handler]
-)
-logger = logging.getLogger('asekuro')
-
 
 def _cwd(nbpath):
     """
@@ -21,6 +13,7 @@ def _cwd(nbpath):
     We also return the folder and filename of the path.
     :param nbpath: Path to the notebook that needs to be tested.
     """
+    logger = logging.getLogger(__name__)
     logger.debug(f"directory of script calling {os.getcwd()}")
     folder = os.path.dirname(nbpath)
     filename = os.path.basename(nbpath)
@@ -75,6 +68,7 @@ def clean_notebook(nbpath):
     Takes a notebook file on disk and removes all cell output.
     :param nbpath: Path to the notebook that needs to be cleaned of output.
     """
+    logger = logging.getLogger(__name__)
     logger.debug(f"about to strip {nbpath} of output")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
@@ -89,6 +83,7 @@ def make_testable_notebook(nbpath):
     Creates a new notebook that is ready for testing. New file with have `-test.ipynb` at the end.
     :param nbpath: Path to the notebook that needs to be tested.
     """
+    logger = logging.getLogger(__name__)
     logger.debug(f"about to prepare {nbpath} for testing")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
@@ -112,6 +107,7 @@ def test_notebook(nbpath):
     - remove said temporary test file
     :param nbpath: Path to the notebook that needs to be tested.
     """
+    logger = logging.getLogger(__name__)
     logger.debug(f"about to test {nbpath}")
     folder, filename = _cwd(nbpath)
     make_testable_notebook(nbpath=filename)
@@ -133,4 +129,8 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    )
     main()
