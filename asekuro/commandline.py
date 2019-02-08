@@ -78,7 +78,7 @@ def clean_notebook(nbpath):
     logger.debug(f"{nbpath} is now stripped")
 
 
-def make_testable_notebook(nbpath):
+def make_testable_notebook(nbpath, remove_meta=True):
     """
     Creates a new notebook that is ready for testing. New file with have `-test.ipynb` at the end.
     :param nbpath: Path to the notebook that needs to be tested.
@@ -87,6 +87,13 @@ def make_testable_notebook(nbpath):
     logger.debug(f"about to prepare {nbpath} for testing")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
+    if remove_meta:
+        logger.debug("removing kernelspec metadata from notebook as well")
+        notebook['metadata']['kernelspec'] = {
+           "display_name": "python",
+           "language": "python",
+           "name": "python"
+          }
     for cell in _cells(notebook):
         if cell['cell_type'] == 'code':
             if '%load' in cell['source']:
