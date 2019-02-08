@@ -3,6 +3,7 @@ import subprocess
 
 from asekuro.commandline import _testfile
 
+
 class TestPathHandlingLocal:
 
     @classmethod
@@ -18,6 +19,10 @@ class TestPathHandlingLocal:
 
     def test_good_nb(self):
         status = subprocess.call(['asekuro', 'test', 'good-nb.ipynb'])
+        assert status == 0
+
+    def test_good_nb_meta(self):
+        status = subprocess.call(['asekuro', 'test', 'good-nb-metadata.ipynb'])
         assert status == 0
 
     def test_data_nb(self):
@@ -42,3 +47,8 @@ class TestCommandLineWorksWithPath:
     def test_bad_bn(self):
         status = subprocess.call(['asekuro', 'test', 'tests/bad-nb.ipynb'])
         assert status == 2
+
+    def test_good_nb_meta(self):
+        status = subprocess.call(['asekuro', 'test', 'tests/good-nb-metadata.ipynb'])
+        assert status == 0
+

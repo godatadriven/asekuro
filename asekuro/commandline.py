@@ -88,8 +88,12 @@ def make_testable_notebook(nbpath, remove_meta=True):
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
     if remove_meta:
-        logger.debug("removing language metadata from notebook as well")
-        notebook['metadata']['language_info'] = {}
+        logger.debug("removing kernelspec metadata from notebook as well")
+        notebook['metadata']['kernelspec'] = {
+           "display_name": "python",
+           "language": "python",
+           "name": "python"
+          }
     for cell in _cells(notebook):
         if cell['cell_type'] == 'code':
             if '%load' in cell['source']:
