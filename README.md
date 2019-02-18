@@ -9,22 +9,21 @@ A commandline util for jupyter notebooks, possibly to be used in trainings and/o
 ![](notebook-img.png)
 
 The main goal is to have a commandline app that can be used in githooks. The main 
-feature we wanted in this app is that we had a nice way to: 
+features we wanted in this app is that we had a nice way to: 
 
 1. Clear notebook cells 
 2. Be able to confirm that the notebook can run without errors.
 3. Be able to deal with solutions via `%load` magic.  
-4. Be able to automatically add a copyright notice and a logo at the top. 
 
 # Quick-Start 
 
-Installation currently needs to occur via git. 
+Installation can be done via pip. 
 
 ```
 > pip install asekuro
 ```
 
-Note that we only support python 3. 
+Note that we only support python>=3.6. 
 
 # Usage 
 
@@ -73,3 +72,11 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 
 You can run some unit tests via `pytest`. Note that we test using local notebooks 
 as well as a docker container. We want the container that is there to break the build. 
+
+# Roadmap 
+
+There's a few extra features that will be added in 2019. 
+
+- the ability to add copyright information 
+- the ability to turn a notebook into an `.md` template for a blog 
+- bugfixes like the `%load_ext` bug
