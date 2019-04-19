@@ -104,7 +104,7 @@ def make_testable_notebook(nbpath, remove_meta=True):
           }
     for cell in _cells(notebook):
         if cell['cell_type'] == 'code':
-            if '%load' in cell['source']:
+            if '%load ' in cell['source']:
                 logger.debug(f'found %load-magic in cell with id={cell["execution_count"]}')
                 logger.debug(cell['source'])
                 py_path = cell['source'].replace('%load ', '')
@@ -147,7 +147,6 @@ def main():
     parser.add_argument('path', type=str, nargs='+',
                         help='what file(s) to apply the command on')
     args = parser.parse_args()
-    print(args)
 
     if args.action == 'test':
         test_notebook(args.path)
