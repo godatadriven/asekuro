@@ -1,9 +1,17 @@
-import fire
-import nbformat
-import subprocess
-import logging
-import sys
 import os
+import sys
+import glob
+import logging
+import argparse
+import subprocess
+
+import nbformat
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+)
 
 
 def _cwd(nbpath):
@@ -13,7 +21,6 @@ def _cwd(nbpath):
     We also return the folder and filename of the path.
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logger = logging.getLogger(__name__)
     logger.debug(f"directory of script calling {os.getcwd()}")
     folder = os.path.dirname(nbpath)
     filename = os.path.basename(nbpath)
@@ -68,14 +75,17 @@ def clean_notebook(nbpath):
     Takes a notebook file on disk and removes all cell output.
     :param nbpath: Path to the notebook that needs to be cleaned of output.
     """
-    logger = logging.getLogger(__name__)
-    logger.debug(f"about to strip {nbpath} of output")
-    with open(nbpath, 'r') as f:
-        notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
-    notebook = _strip_output(notebook)
-    with open(nbpath, 'w', encoding='utf8') as f:
-        nbformat.write(notebook, f)
-    logger.debug(f"{nbpath} is now stripped")
+    found_paths = nbpath if isinstance(nbpath, list) else [nbpath]
+    for path in found_paths:
+        logger.debug(f"found file {path}")
+    for path in found_paths:
+        logger.debug(f"about to strip {path} of output")
+        with open(path, 'r') as f:
+            notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
+        notebook = _strip_output(notebook)
+        with open(path, 'w', encoding='utf8') as f:
+            nbformat.write(notebook, f)
+        logger.debug(f"{path} is now stripped")
 
 
 def make_testable_notebook(nbpath, remove_meta=True):
@@ -83,7 +93,6 @@ def make_testable_notebook(nbpath, remove_meta=True):
     Creates a new notebook that is ready for testing. New file with have `-test.ipynb` at the end.
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logger = logging.getLogger(__name__)
     logger.debug(f"about to prepare {nbpath} for testing")
     with open(nbpath, 'r') as f:
         notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
@@ -114,30 +123,32 @@ def test_notebook(nbpath):
     - remove said temporary test file
     :param nbpath: Path to the notebook that needs to be tested.
     """
-    logger = logging.getLogger(__name__)
-    logger.debug(f"about to test {nbpath}")
-    folder, filename = _cwd(nbpath)
-    make_testable_notebook(nbpath=filename)
-    clean_notebook(nbpath=_testfile(filename))
-    status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
-    logger.debug(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
-    os.remove(_testfile(nbpath=filename))
-    logger.debug(f"testing done for {nbpath}")
-    if status == 1:
-        logger.debug(f"error was found so exiting with error code 1")
-        sys.exit(2)
+    nbpath = nbpath if isinstance(nbpath, list) else [nbpath]
+    for path in nbpath:
+        logger.debug(f"about to test {path}")
+        folder, filename = _cwd(path)
+        make_testable_notebook(nbpath=filename)
+        clean_notebook(nbpath=_testfile(filename))
+        status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
+        logger.debug(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
+        os.remove(_testfile(nbpath=filename))
+        logger.debug(f"testing done for {path}")
+        if status == 1:
+            logger.debug(f"error was found so exiting with error code 1")
+            sys.exit(2)
+        logger.debug(f"no errors were found")
 
 
 def main():
-    fire.Fire({
-        'test': test_notebook,
-        'clean': clean_notebook
-    })
+    parser = argparse.ArgumentParser(description='Process some notebooks.')
+    parser.add_argument('action', type=str,
+                        help='available commands: test/clean')
+    parser.add_argument('path', type=str, nargs='+',
+                        help='what file(s) to apply the command on')
+    args = parser.parse_args()
+    print(args)
 
-
-if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
-    )
-    main()
+    if args.action == 'test':
+        test_notebook(args.path)
+    if args.action == 'clean':
+        clean_notebook(args.path)
