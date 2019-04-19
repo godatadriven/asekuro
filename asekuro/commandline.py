@@ -123,7 +123,9 @@ def test_notebook(nbpath):
     :param nbpath: Path to the notebook that needs to be tested.
     """
     nbpath = nbpath if isinstance(nbpath, list) else [nbpath]
+    current_dir = os.getcwd()
     for path in nbpath:
+        os.chdir(current_dir)
         logger.debug(f"about to test {path}")
         folder, filename = _cwd(path)
         make_testable_notebook(nbpath=filename)
