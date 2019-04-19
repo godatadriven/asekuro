@@ -72,11 +72,3 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 
 You can run some unit tests via `pytest`. Note that we test using local notebooks 
 as well as a docker container. We want the container that is there to break the build. 
-
-# Roadmap 
-
-There's a few extra features that will be added in 2019. 
-
-- the ability to add copyright information 
-- the ability to turn a notebook into an `.md` template for a blog 
-- bugfixes like the `%load_ext` bug
