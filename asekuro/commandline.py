@@ -160,7 +160,11 @@ def klopt_notebook(nbpaths):
     logger.info(f"parsed {conv_file}")
     for pyfile in pyfiles:
         logger.info(f"about to parse tests in {pyfile}")
-        exec(open(pyfile).read())
+        try:
+            exec(open(pyfile).read())
+        except:
+            logger.info(f"{pyfile} caused an error")
+            sys.exit(2)
         logger.info(f"evaluated tests in {pyfile}")
 
 

@@ -57,6 +57,17 @@ class TestCommandLineWorksWithPath:
         assert status == 0
 
 
+class TestKloptCommands:
+
+    def test_good_nb(self):
+        status = subprocess.call(['asekuro', 'klopt', 'tests/functions.ipynb', 'tests/functions-solution.py'])
+        assert status == 0
+
+    def test_clean_good_nb(self):
+        status = subprocess.call(['asekuro', 'klopt', 'tests/functions.ipynb', 'tests/functions-solution-fail.py'])
+        assert status == 2
+
+
 class TestCommandsWorkWithWildCards:
 
     def test_good_nb(self):
