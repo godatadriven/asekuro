@@ -29,7 +29,7 @@ jobs:
           command: |
             . venv/bin/activate
             python setup.py install
-            asekuro
+            asekuro --help
 
       - run:
          name: check help outputs of commandline and run pytests

@@ -1,6 +1,5 @@
 import os
 import sys
-import glob
 import logging
 import argparse
 import subprocess
