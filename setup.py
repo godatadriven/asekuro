@@ -27,7 +27,6 @@ setup(
     python_requires='>=3.6',
     install_requires=['pytest>=4.0.2',
                       'nbval>=0.9.1',
-                      'fire>=0.1.3',
                       'nbformat>=4.4.0'],
     classifiers=['Topic :: Software Development :: Build Tools',
                  'Topic :: Utilities',

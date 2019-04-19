@@ -52,3 +52,17 @@ class TestCommandLineWorksWithPath:
         status = subprocess.call(['asekuro', 'test', 'tests/good-nb-metadata.ipynb'])
         assert status == 0
 
+    def test_good_nb_autoreload(self):
+        status = subprocess.call(['asekuro', 'test', 'tests/nb-autoreload.ipynb'])
+        assert status == 0
+
+
+class TestCommandsWorkWithWildCards:
+
+    def test_good_nb(self):
+        status = subprocess.call(['asekuro', 'test', 'tests/data-nb.ipynb', 'tests/good-nb.ipynb'])
+        assert status == 0
+
+    def test_clean_good_nb(self):
+        status = subprocess.call(['asekuro', 'clean', 'tests/good-nb-metadata.ipynb', 'tests/good-nb.ipynb'])
+        assert status == 0
