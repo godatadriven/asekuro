@@ -162,7 +162,8 @@ def klopt_notebook(nbpaths):
         logger.info(f"about to parse tests in {pyfile}")
         try:
             exec(open(pyfile).read())
-        except:
+        except AssertionError as e:
+            print(e)
             logger.info(f"{pyfile} caused an error")
             sys.exit(2)
         logger.info(f"evaluated tests in {pyfile}")
