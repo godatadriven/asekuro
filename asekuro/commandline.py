@@ -99,10 +99,10 @@ def make_testable_notebook(nbpath, remove_meta=True):
     if remove_meta:
         logger.info("removing kernelspec metadata from notebook as well")
         notebook['metadata']['kernelspec'] = {
-           "display_name": "python",
-           "language": "python",
-           "name": "python"
-          }
+            "display_name": "python",
+            "language": "python",
+            "name": "python"
+        }
     for cell in _cells(notebook):
         if cell['cell_type'] == 'code':
             if '%load ' in cell['source']:
