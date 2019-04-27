@@ -177,6 +177,8 @@ def main():
                         help='what file(s) to apply the command on')
     args = parser.parse_args()
 
+    if args.action not in ['test', 'clean', 'klopt']:
+        raise ValueError("action must be test/clean/klopt")
     if args.action == 'test':
         test_notebook(args.path)
     if args.action == 'clean':
