@@ -10,7 +10,7 @@ import nbconvert
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    format='%(message)s'
 )
 
 
@@ -162,8 +162,11 @@ def klopt_notebook(nbpaths):
         logger.info(f"about to parse tests in {pyfile}")
         try:
             exec(open(pyfile).read())
+        except AssertionError as e:
+            logger.info(e)
+            sys.exit(2)
         except:
-            logger.info(f"{pyfile} caused an error")
+            logger.info(f"{pyfile} caused an error that wasn't an AssertionError")
             sys.exit(2)
         logger.info(f"evaluated tests in {pyfile}")
 
