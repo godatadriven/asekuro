@@ -147,14 +147,14 @@ def klopt_notebook(nbpaths):
         raise ValueError("nbpaths must start with .ipynb file")
     if any([".py" != os.path.splitext(f)[1] for f in pyfiles]):
         raise ValueError("must supply python files after notebook file")
-    with open(nbpath, 'r') as f:
+    with open(nbpath, 'r') as readfile:
         logger.info(f"reading {nbpath}")
-        notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
+        notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
     logger.info(f"notebook {nbpath} has been read")
     output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
     conv_file = nbpath.replace(".ipynb", ".py")
-    with open(conv_file, "w") as f:
-        f.write(str(output))
+    with open(conv_file, "w") as readfile:
+        readfile.write(str(output))
     exec(open(conv_file).read())
     os.remove(conv_file)
     logger.info(f"parsed {conv_file}")
