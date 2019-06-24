@@ -7,6 +7,8 @@ import subprocess
 import nbformat
 import nbconvert
 
+from asekuro import __version__ as version
+
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
@@ -172,7 +174,7 @@ def klopt_notebook(nbpaths):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Process some notebooks.')
+    parser = argparse.ArgumentParser(description=f'Process some notebooks. Version {version}')
     parser.add_argument('action', type=str,
                         help='available commands: test/clean/klopt')
     parser.add_argument('path', type=str, nargs='+',
