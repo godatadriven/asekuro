@@ -12,6 +12,9 @@ clean:
 	rm -rf .ipynb_checkpoints
 	rm -rf .pytest_cache
 	rm -rf dist
+	rm -rf tests/.ipynb_checkpoints
+	rm -rf notebooks/.ipynb_checkpoints
+
 
 develop: deps
 	python setup.py develop

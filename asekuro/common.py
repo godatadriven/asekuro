@@ -10,7 +10,7 @@ import nbconvert
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    format='%(asctime)s %(levelname)s - %(message)s'
 )
 
 
@@ -141,32 +141,44 @@ def test_notebook(nbpath):
         logger.info(f"no errors were found")
 
 
-def klopt_notebook(nbpaths):
-    nbpath, *pyfiles = nbpaths
-    if ".ipynb" != os.path.splitext(nbpath)[1]:
-        raise ValueError("nbpaths must start with .ipynb file")
-    if any([".py" != os.path.splitext(f)[1] for f in pyfiles]):
-        raise ValueError("must supply python files after notebook file")
-    with open(nbpath, 'r') as readfile:
-        logger.info(f"reading {nbpath}")
-        notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
-    logger.info(f"notebook {nbpath} has been read")
-    output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
-    conv_file = nbpath.replace(".ipynb", ".py")
-    with open(conv_file, "w") as readfile:
-        readfile.write(str(output))
-    exec(open(conv_file).read())
-    os.remove(conv_file)
-    logger.info(f"parsed {conv_file}")
-    for pyfile in pyfiles:
-        logger.info(f"about to parse tests in {pyfile}")
-        try:
-            exec(open(pyfile).read())
-        except AssertionError as e:
-            print(e)
-            logger.info(f"{pyfile} caused an error")
-            sys.exit(2)
-        logger.info(f"evaluated tests in {pyfile}")
+def check_files(nbpaths, verbose):
+    tmpfile = "temporaryfile.py"
+    for path in nbpaths:
+        if os.path.splitext(path)[1] == '.ipynb':
+            with open(path, 'r') as readfile:
+                logger.info(f"reading {path}")
+                notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
+            output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
+        elif os.path.splitext(path)[1] == '.py':
+            with open(path, 'r') as readfile:
+                output = readfile.read()
+        else:
+            raise ValueError("supplied file must be either .py/.ipynb")
+        logger.info(f"writing {path} into {tmpfile}")
+        with open(tmpfile, "a") as readfile:
+            readfile.write(str(output))
+        logger.info(f"added {path} to temporary file")
+    if verbose:
+        with open(tmpfile, "r") as f:
+            for line in f.readlines():
+                print(line.replace("\n", ""))
+    pyfile_check_error(tmpfile)
+
+
+def pyfile_check_error(tmpfile):
+    try:
+        exec(open(tmpfile).read())
+    except AssertionError as e:
+        print(e)
+        logger.info(f"AssertionError detected!")
+        os.remove(tmpfile)
+        sys.exit(2)
+    except:
+        logger.info(f"something broke but it wasn't an assertion error")
+        os.remove(tmpfile)
+        sys.exit(2)
+    os.remove(tmpfile)
+    logger.info(f"{tmpfile} has been removed")
 
 
 def main():
@@ -182,4 +194,4 @@ def main():
     if args.action == 'clean':
         clean_notebook(args.path)
     if args.action == 'klopt':
-        klopt_notebook(args.path)
+        check_files(args.path)
