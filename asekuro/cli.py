@@ -45,14 +45,16 @@ def test(files):
 
 
 @click.command()
-@click.argument('files', nargs=-1, type=click.Path())
+@click.argument('ipynb_file', nargs=1, type=click.Path())
+@click.argument('py_file', nargs=1, type=click.Path())
+@click.argument('prefix', default="FAIL: ", nargs=1)
 @click.option('--verbose', '-v', count=True, help='Show more verbose output.')
-def check(files, verbose):
+def check(ipynb_file, py_file, prefix, verbose):
     """Check (notebook) files in sequention for errors."""
     click.echo(click.style('Will check a sequence of (juypter/py) files.', fg='green'))
-    for file in files:
+    for file in [ipynb_file, py_file]:
         click.echo(click.style(f'found file: {file}'))
-    check_files(files, verbose=verbose)
+    check_files(ipynbfile=ipynb_file, pyfile=py_file, verbose=verbose, prefix=prefix)
 
 
 main.add_command(version)

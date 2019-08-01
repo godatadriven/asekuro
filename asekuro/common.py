@@ -140,40 +140,44 @@ def test_notebook(nbpath):
         logger.info(f"no errors were found")
 
 
-def check_files(nbpaths, verbose):
-    tmpfile = "temporaryfile.py"
-    for path in nbpaths:
-        if os.path.splitext(path)[1] == '.ipynb':
-            with open(path, 'r') as readfile:
-                logger.info(f"reading {path}")
-                notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
-            output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
-        elif os.path.splitext(path)[1] == '.py':
-            with open(path, 'r') as readfile:
-                output = readfile.read()
-        else:
-            raise ValueError("supplied file must be either .py/.ipynb")
-        logger.info(f"writing {path} into {tmpfile}")
-        with open(tmpfile, "a") as readfile:
-            readfile.write(str(output))
-        logger.info(f"added {path} to temporary file")
+def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
+    if os.path.splitext(ipynbfile)[1] != '.ipynb':
+        raise ValueError(".ipynb file needs to have .ipynb extension")
+    if os.path.splitext(pyfile)[1] != '.py':
+        raise ValueError(".py file needs to have .py extension")
+
+    with open(ipynbfile, 'r') as readfile:
+        logger.info(f"reading {ipynbfile}")
+        notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
+    output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
     if verbose:
-        with open(tmpfile, "r") as f:
-            for line in f.readlines():
-                print(line.replace("\n", ""))
-    pyfile_check_error(tmpfile)
+        print(output)
+    logger.info(f"notebook {ipynbfile} has been parsed")
+    try:
+        exec(output)
+        logger.info(f"notebook {ipynbfile} has been executed")
+    except:
+        logger.info(f"{prefix} Jupyter notebook gave an error! Make sure it runs without error.")
+        sys.exit(2)
+
+    if verbose:
+        logger.info(f"showing contents of {pyfile}")
+        with open(pyfile, "r") as f:
+            for l in f.readlines():
+                print(l.replace("\n", ""))
+    try:
+        exec(open(pyfile).read())
+    except AssertionError as e:
+        print(f"{prefix} {e}")
+        sys.exit(2)
+    # pyfile_check_error(pyfile)
 
 
 def pyfile_check_error(tmpfile):
     try:
         exec(open(tmpfile).read())
     except AssertionError as e:
-        print(e)
-        logger.info(f"AssertionError detected!")
-        os.remove(tmpfile)
-        sys.exit(2)
-    except:
-        logger.info(f"something broke but it wasn't an assertion error")
+        logger.info(f"FAIL: AssertionError detected!")
         os.remove(tmpfile)
         sys.exit(2)
     os.remove(tmpfile)
