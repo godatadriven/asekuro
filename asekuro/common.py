@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import argparse
 import subprocess
 
 import nbformat
@@ -179,19 +178,3 @@ def pyfile_check_error(tmpfile):
         sys.exit(2)
     os.remove(tmpfile)
     logger.info(f"{tmpfile} has been removed")
-
-
-def main():
-    parser = argparse.ArgumentParser(description='Process some notebooks.')
-    parser.add_argument('action', type=str,
-                        help='available commands: test/clean/klopt')
-    parser.add_argument('path', type=str, nargs='+',
-                        help='what file(s) to apply the command on')
-    args = parser.parse_args()
-
-    if args.action == 'test':
-        test_notebook(args.path)
-    if args.action == 'clean':
-        clean_notebook(args.path)
-    if args.action == 'klopt':
-        check_files(args.path)
