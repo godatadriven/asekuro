@@ -19,7 +19,7 @@ setup(
     author='Vincent D. Warmerdam',
     entry_points={
         'console_scripts': [
-            'asekuro = asekuro.commandline:main',
+            'asekuro = asekuro.cli:main',
         ],
     },
     url='https://github.com/godatadriven/asekuro',
@@ -28,7 +28,8 @@ setup(
     install_requires=['pytest>=4.0.2',
                       'nbval>=0.9.1',
                       'nbformat>=4.4.0',
-                      'nbconvert>=5.4.0'],
+                      'nbconvert>=5.4.0',
+                      'Click>=7.0'],
     classifiers=['Topic :: Software Development :: Build Tools',
                  'Topic :: Utilities',
                  'Framework :: Jupyter',

@@ -131,7 +131,7 @@ def test_notebook(nbpath):
         folder, filename = _cwd(path)
         make_testable_notebook(nbpath=filename)
         clean_notebook(nbpath=_testfile(filename))
-        status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
+        status = subprocess.call(['pytest', '--nbval-lax', '--disable-warnings', '--verbose', _testfile(nbpath=filename)])
         logger.info(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
         os.remove(_testfile(nbpath=filename))
         logger.info(f"testing done for {path}")

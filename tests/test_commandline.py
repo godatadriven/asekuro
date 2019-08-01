@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-from asekuro.commandline import _testfile
+from asekuro.common import _testfile
 
 
 class TestPathHandlingLocal:
@@ -60,11 +60,11 @@ class TestCommandLineWorksWithPath:
 class TestKloptCommands:
 
     def test_good_nb(self):
-        status = subprocess.call(['asekuro', 'klopt', 'tests/functions.ipynb', 'tests/functions-solution.py'])
+        status = subprocess.call(['asekuro', 'check', 'tests/functions.ipynb', 'tests/functions-solution.py'])
         assert status == 0
 
     def test_clean_good_nb(self):
-        status = subprocess.call(['asekuro', 'klopt', 'tests/functions.ipynb', 'tests/functions-solution-fail.py'])
+        status = subprocess.call(['asekuro', 'check', 'tests/functions.ipynb', 'tests/functions-solution-fail.py'])
         assert status == 2
 
 
