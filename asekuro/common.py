@@ -141,6 +141,16 @@ def test_notebook(nbpath):
 
 
 def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
+    """
+    This method checks a notebook if there are any general errors in it.
+    After doing this it will take a python file that contains assert statements
+    and will throw a status code of 2 if there are failures. Will also print
+    the prefixed error message.
+    :param ipynbfile: the notebook file
+    :param pyfile: the python file
+    :param verbose: turn on verbose mode, will print the code in both files
+    :param prefix: optional prefix to add to the error message
+    """
     if os.path.splitext(ipynbfile)[1] != '.ipynb':
         raise ValueError(".ipynb file needs to have .ipynb extension")
     if os.path.splitext(pyfile)[1] != '.py':
@@ -165,20 +175,16 @@ def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
         with open(pyfile, "r") as f:
             for l in f.readlines():
                 print(l.replace("\n", ""))
-    try:
-        exec(open(pyfile).read())
-    except AssertionError as e:
-        print(f"{prefix} {e}")
-        sys.exit(2)
-    # pyfile_check_error(pyfile)
 
-
-def pyfile_check_error(tmpfile):
+    tmpfile = "tmpfile.py"
+    with open(tmpfile, "a") as f:
+        f.write(output)
+        with open(pyfile, "r") as py:
+            f.write(py.read())
     try:
         exec(open(tmpfile).read())
+        os.remove(tmpfile)
     except AssertionError as e:
-        logger.info(f"FAIL: AssertionError detected!")
+        print(f"{prefix} {e}")
         os.remove(tmpfile)
         sys.exit(2)
-    os.remove(tmpfile)
-    logger.info(f"{tmpfile} has been removed")
