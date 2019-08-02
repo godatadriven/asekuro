@@ -27,14 +27,33 @@ Note that we only support python>=3.6.
 
 # Usage 
 
-Once installed, the commandline app can be used. 
+Once installed, the commandline app can be used.
+
+```bash
+> asekuro
+Usage: asekuro [OPTIONS] COMMAND [ARGS]...
+
+  Asekuro - it means insurance in esperanto.
+
+  This command line app allows you to check for errors in jupyter notebooks
+  and it also allows you to supply a python file with assert statements.
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  check    Check (notebook) files in sequention for errors.
+  clean    Clean notebook files.
+  test     Check notebook files independantly.
+  version  Echo the version of asekuro.
+``` 
 
 #### Testing a Notebook 
 
 We merely test if the notebook can be run from top to bottom without any 
 errors. This may be dependant on the virtualenv that you're currently running.
 
-```
+```bash
 > asekuro test tests/testnb.ipynb
 2018-07-30 15:40:04,060 [commandline.py:test_notebook:113] DEBUG - about to test tests/testnb.ipynb
 ...
@@ -62,7 +81,7 @@ tmp/testnb-test::ipynb::Cell 5 PASSED                                        [10
 
 Sometimes you may want to remove the output of the cells. This can be done automatically now too. 
 
-```
+```bash
 > asekuro clean tests/testnb.ipynb 
 2018-07-30 15:44:23,508 [commandline.py:clean_notebook:76] DEBUG - about to strip tests/testnb.ipynb of output
 2018-07-30 15:44:23,516 [commandline.py:clean_notebook:82] DEBUG - tests/testnb.ipynb is now stripped

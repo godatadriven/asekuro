@@ -1,7 +1,6 @@
 import os
 import sys
 import logging
-import argparse
 import subprocess
 
 import nbformat
@@ -10,7 +9,7 @@ import nbconvert
 logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(filename)s:%(funcName)s:%(lineno)d] %(levelname)s - %(message)s'
+    format='%(asctime)s %(levelname)s - %(message)s'
 )
 
 
@@ -131,7 +130,7 @@ def test_notebook(nbpath):
         folder, filename = _cwd(path)
         make_testable_notebook(nbpath=filename)
         clean_notebook(nbpath=_testfile(filename))
-        status = subprocess.call(['pytest', '--nbval-lax', '--verbose', _testfile(nbpath=filename)])
+        status = subprocess.call(['pytest', '--nbval-lax', '--disable-warnings', '--verbose', _testfile(nbpath=filename)])
         logger.info(f"removing temporary testing notebook {_testfile(nbpath=filename)}")
         os.remove(_testfile(nbpath=filename))
         logger.info(f"testing done for {path}")
@@ -141,45 +140,51 @@ def test_notebook(nbpath):
         logger.info(f"no errors were found")
 
 
-def klopt_notebook(nbpaths):
-    nbpath, *pyfiles = nbpaths
-    if ".ipynb" != os.path.splitext(nbpath)[1]:
-        raise ValueError("nbpaths must start with .ipynb file")
-    if any([".py" != os.path.splitext(f)[1] for f in pyfiles]):
-        raise ValueError("must supply python files after notebook file")
-    with open(nbpath, 'r') as readfile:
-        logger.info(f"reading {nbpath}")
+def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
+    """
+    This method checks a notebook if there are any general errors in it.
+    After doing this it will take a python file that contains assert statements
+    and will throw a status code of 2 if there are failures. Will also print
+    the prefixed error message.
+    :param ipynbfile: the notebook file
+    :param pyfile: the python file
+    :param verbose: turn on verbose mode, will print the code in both files
+    :param prefix: optional prefix to add to the error message
+    """
+    if os.path.splitext(ipynbfile)[1] != '.ipynb':
+        raise ValueError(".ipynb file needs to have .ipynb extension")
+    if os.path.splitext(pyfile)[1] != '.py':
+        raise ValueError(".py file needs to have .py extension")
+
+    with open(ipynbfile, 'r') as readfile:
+        logger.info(f"reading {ipynbfile}")
         notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
-    logger.info(f"notebook {nbpath} has been read")
     output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
-    conv_file = nbpath.replace(".ipynb", ".py")
-    with open(conv_file, "w") as readfile:
-        readfile.write(str(output))
-    exec(open(conv_file).read())
-    os.remove(conv_file)
-    logger.info(f"parsed {conv_file}")
-    for pyfile in pyfiles:
-        logger.info(f"about to parse tests in {pyfile}")
-        try:
-            exec(open(pyfile).read())
-        except AssertionError as e:
-            print(e)
-            logger.info(f"{pyfile} caused an error")
-            sys.exit(2)
-        logger.info(f"evaluated tests in {pyfile}")
+    if verbose:
+        print(output)
+    logger.info(f"notebook {ipynbfile} has been parsed")
+    try:
+        exec(output)
+        logger.info(f"notebook {ipynbfile} has been executed")
+    except:
+        logger.info(f"{prefix} Jupyter notebook gave an error! Make sure it runs without error.")
+        sys.exit(2)
 
+    if verbose:
+        logger.info(f"showing contents of {pyfile}")
+        with open(pyfile, "r") as f:
+            for l in f.readlines():
+                print(l.replace("\n", ""))
 
-def main():
-    parser = argparse.ArgumentParser(description='Process some notebooks.')
-    parser.add_argument('action', type=str,
-                        help='available commands: test/clean/klopt')
-    parser.add_argument('path', type=str, nargs='+',
-                        help='what file(s) to apply the command on')
-    args = parser.parse_args()
-
-    if args.action == 'test':
-        test_notebook(args.path)
-    if args.action == 'clean':
-        clean_notebook(args.path)
-    if args.action == 'klopt':
-        klopt_notebook(args.path)
+    tmpfile = "tmpfile.py"
+    with open(tmpfile, "a") as f:
+        f.write(output)
+        with open(pyfile, "r") as py:
+            f.write(py.read())
+    try:
+        exec(open(tmpfile).read())
+        os.remove(tmpfile)
+    except AssertionError as e:
+        print(f"{prefix} {e}")
+        os.remove(tmpfile)
+        sys.exit(2)
