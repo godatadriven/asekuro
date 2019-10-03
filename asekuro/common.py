@@ -141,7 +141,7 @@ def test_notebook(nbpath):
         logger.info(f"no errors were found")
 
 
-def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
+def check_files(ipynbfile, pyfile, verbose=True, prefix="FAIL:"):
     """
     This method checks a notebook if there are any general errors in it.
     After doing this it will take a python file that contains assert statements
@@ -163,10 +163,18 @@ def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
     if verbose:
         for i, cell in enumerate(output.split("#")):
             code = "#" + cell
-            click.echo(click.style(f'checking block {i}', fg='blue'))
-            print(code)
-            exec(code)
-            click.echo(click.style(f'executed.', fg='green'))
+            click.echo(click.style(f'showing block {i}', fg='blue'))
+            for line in code.split("\n"):
+                if line != "\n":
+                    print("  " + line)
+            try:
+                exec(code)
+            except:
+                click.echo(click.style(f"Error in codeblock!", fg='red'))
+                print(code)
+                print(f"{prefix}notebook contains error on it's own.'")
+                sys.exit(2)
+
     click.echo(click.style(f"Notebook {ipynbfile} has been parsed.", fg='blue'))
     try:
         exec(output)
