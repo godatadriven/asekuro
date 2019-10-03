@@ -29,6 +29,7 @@ def clean(files):
     for file in files:
         click.echo(click.style(f'found file: {file}'))
         clean_notebook(file)
+    click.echo(click.style('All notebooks clean.', fg='green'))
 
 
 @click.command(help='Check notebook files independantly.')
@@ -37,11 +38,12 @@ def test(files):
     home_path = os.getcwd()
     click.echo(click.style('Will check a sequence of independant notebooks. Has support for %load.', fg='green'))
     for file in files:
-        click.echo(click.style(f'found file: {file}'))
+        click.echo(click.style(f'Found file: {file}', fg='blue'))
         test_notebook(file)
         # the paths matter because of the %load mechanic
         # the test_notebook will switch paths and we switch back here
         os.chdir(home_path)
+    click.echo(click.style('All notebooks are green.', fg='green'))
 
 
 @click.command()
@@ -53,8 +55,9 @@ def check(ipynb_file, py_file, prefix, verbose):
     """Check (notebook) files in sequention for errors."""
     click.echo(click.style('Will check a sequence of (juypter/py) files.', fg='green'))
     for file in [ipynb_file, py_file]:
-        click.echo(click.style(f'found file: {file}'))
+        click.echo(click.style(f'Found file: {file}', fg='blue'))
     check_files(ipynbfile=ipynb_file, pyfile=py_file, verbose=verbose, prefix=prefix)
+    click.echo(click.style('Notebook is confirmed by python file.', fg='green'))
 
 
 main.add_command(version)
