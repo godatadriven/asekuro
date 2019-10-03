@@ -3,6 +3,7 @@ import sys
 import logging
 import subprocess
 
+import click
 import nbformat
 import nbconvert
 
@@ -140,7 +141,7 @@ def test_notebook(nbpath):
         logger.info(f"no errors were found")
 
 
-def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
+def check_files(ipynbfile, pyfile, verbose=True, prefix="FAIL:"):
     """
     This method checks a notebook if there are any general errors in it.
     After doing this it will take a python file that contains assert statements
@@ -157,21 +158,34 @@ def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
         raise ValueError(".py file needs to have .py extension")
 
     with open(ipynbfile, 'r') as readfile:
-        logger.info(f"reading {ipynbfile}")
         notebook = nbformat.read(readfile, as_version=nbformat.NO_CONVERT)
     output, metadata = nbconvert.export(nbconvert.PythonExporter, notebook)
     if verbose:
-        print(output)
-    logger.info(f"notebook {ipynbfile} has been parsed")
+        for i, cell in enumerate(output.split("#")):
+            code = "#" + cell
+            click.echo(click.style(f'showing block {i}', fg='blue'))
+            for line in code.split("\n"):
+                if line != "\n":
+                    print("  " + line)
+            try:
+                exec(code)
+            except:
+                click.echo(click.style(f"Error in codeblock!", fg='red'))
+                print(code)
+                print(f"{prefix}notebook contains error on it's own.'")
+                sys.exit(2)
+
+    click.echo(click.style(f"Notebook {ipynbfile} has been parsed.", fg='blue'))
     try:
         exec(output)
-        logger.info(f"notebook {ipynbfile} has been executed")
+        click.echo(click.style(f"Notebook {ipynbfile} has been executed.", fg='blue'))
     except:
-        logger.info(f"{prefix} Jupyter notebook gave an error! Make sure it runs without error.")
+        click.echo(click.style("ERROR!", fg="red"))
+        click.echo(f"{prefix} Jupyter notebook gave an error! Make sure it runs without error.")
         sys.exit(2)
 
     if verbose:
-        logger.info(f"showing contents of {pyfile}")
+        click.echo(click.style(f"Showing contents of {pyfile}.", fg='blue'))
         with open(pyfile, "r") as f:
             for l in f.readlines():
                 print(l.replace("\n", ""))
@@ -181,10 +195,12 @@ def check_files(ipynbfile, pyfile, verbose, prefix="FAIL:"):
         f.write(output)
         with open(pyfile, "r") as py:
             f.write(py.read())
+    click.echo(click.style("Temporary file made. About to make test.", fg='blue'))
     try:
         exec(open(tmpfile).read())
         os.remove(tmpfile)
     except AssertionError as e:
+        click.echo(click.style("ASSERTION ERROR DETECTED:", fg='red'))
         print(f"{prefix} {e}")
         os.remove(tmpfile)
         sys.exit(2)

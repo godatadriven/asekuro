@@ -59,14 +59,14 @@ class TestCommandLineWorksWithPath:
         assert status == 0
 
 
-class TestKloptCommands:
+class TestCheckCommands:
 
     def test_good_nb(self):
-        status = subprocess.call(['asekuro', 'check', 'tests/functions.ipynb', 'tests/functions-solution.py'])
+        status = subprocess.call(['asekuro', 'check', 'tests/notebooks/functions.ipynb', 'tests/functions-solution.py'])
         assert status == 0
 
     def test_clean_good_nb(self):
-        status = subprocess.call(['asekuro', 'check', 'tests/functions.ipynb', 'tests/functions-solution-fail.py'])
+        status = subprocess.call(['asekuro', 'check', 'tests/notebooks/functions.ipynb', 'tests/functions-solution-fail.py'])
         assert status == 2
 
 
