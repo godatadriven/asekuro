@@ -1,6 +1,7 @@
 import os
 import sys
 import logging
+import traceback
 import subprocess
 
 import click
@@ -171,8 +172,8 @@ def check_files(ipynbfile, pyfile, verbose=True, prefix="FAIL:"):
                 exec(code)
             except:
                 click.echo(click.style(f"Error in codeblock!", fg='red'))
-                print(code)
-                print(f"{prefix}notebook contains error on it's own.'")
+                traceback.print_exc()
+                click.echo(click.style(f"{prefix}notebook contains error, could not even pass it to py-file.", fg='red'))
                 sys.exit(2)
 
     click.echo(click.style(f"Notebook {ipynbfile} has been parsed.", fg='blue'))
