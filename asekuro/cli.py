@@ -35,7 +35,7 @@ def clean(files):
 @click.argument('files', nargs=-1, type=click.Path())
 def test(files):
     home_path = os.getcwd()
-    click.echo(click.style('Will check a sequence of independant notebooks. Has support for %load.', fg='green'))
+    click.echo(click.style('Will check a sequence of independent notebooks. Has support for %load.', fg='green'))
     for file in files:
         click.echo(click.style(f'Found file: {file}', fg='blue'))
         test_notebook(file)
