@@ -15,6 +15,10 @@ stages:
     - bash: ls
       displayName: 'Confirm files'
 
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.6'
+
     - bash: |
         set -e
         pip install --upgrade pip
