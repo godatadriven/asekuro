@@ -31,8 +31,3 @@ stages:
       
     - bash: pytest --verbose tests/test_commandline.py
     - bash: pytest --verbose tests/test_docker.py
-    
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: test-reports
-        artifactName: test-reports
