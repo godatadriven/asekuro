@@ -1,0 +1,33 @@
+trigger:
+- master
+pr:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+stages:
+- stage: Test
+  jobs:
+  - job: TestJob
+    steps:
+    - bash: ls
+      displayName: 'Confirm files'
+
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.6'
+
+    - bash: |
+        set -e
+        pip install --upgrade pip
+        pip install -e .
+      displayName: 'Install'
+
+    - bash: |
+        asekuro --help
+      displayName: 'Test CMD'
+      
+    - bash: pytest --verbose tests/test_commandline.py
+    - bash: pytest --verbose tests/test_docker.py
