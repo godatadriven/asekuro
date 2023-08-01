@@ -31,6 +31,10 @@ class TestPathHandlingLocal:
         status = subprocess.call(['asekuro', 'test', 'data-nb.ipynb'])
         assert status == 0
 
+    def test_commented_load(self):
+        status = subprocess.call(['asekuro', 'test', 'commented-load.ipynb'])
+        assert status == 0
+
     def test_bad_bn(self):
         status = subprocess.call(['asekuro', 'test', 'bad-nb.ipynb'])
         assert status == 2

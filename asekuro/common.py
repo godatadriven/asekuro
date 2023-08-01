@@ -108,10 +108,16 @@ def make_testable_notebook(nbpath, remove_meta=True):
         if cell['cell_type'] == 'code':
             if '%load ' in cell['source']:
                 logger.info(f'found %load-magic in cell with id={cell["execution_count"]}')
-                logger.info(cell['source'])
-                py_path = cell['source'].replace('%load ', '')
+                logger.info(f'original cell content: {cell["source"]}')
+                py_path = (
+                    cell['source']
+                    .replace('# %load ', '')
+                    .replace('#%load ', '')
+                    .replace('%load ', '')
+                )
                 with open(py_path, 'r') as f:
                     cell['source'] = f.read()
+                logger.info(f'after loading cell content: {cell["source"]}')
     nbformat.write(notebook, open(_testfile(nbpath=nbpath), mode='w'))
     logger.info(f"wrote notebook ready for testing over at {_testfile(nbpath=nbpath)}")
 

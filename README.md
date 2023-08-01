@@ -13,7 +13,8 @@ features we wanted in this app is that we had a nice way to:
 
 1. Clear notebook cells 
 2. Be able to confirm that the notebook can run without errors.
-3. Be able to deal with solutions via `%load` magic.  
+3. Be able to deal with solutions via `%load` magic.
+    - Including cells starting with `%load`, and commented-out versions `# %load` and `#%load`.
 
 # Quick-Start 
 
