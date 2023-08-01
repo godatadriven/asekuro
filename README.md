@@ -29,24 +29,23 @@ Note that we only support python>=3.6.
 
 Once installed, the commandline app can be used.
 
-```bash
+```
 > asekuro
 Usage: asekuro [OPTIONS] COMMAND [ARGS]...
 
   Asekuro - it means insurance in esperanto.
 
-  This command line app allows you to check for errors in jupyter notebooks
-  and it also allows you to supply a python file with assert statements.
+  This command line app allows you to check for errors in jupyter notebooks.
 
 Options:
   --help  Show this message and exit.
 
 Commands:
-  check    Check (notebook) files in sequention for errors.
-  clean    Clean notebook files.
-  test     Check notebook files independantly.
+  check	   Check notebook file by following it with a python file with a python file with assert statements.
+  clean	   Clean notebook files.
+  test	   Check notebook files independantly.
   version  Echo the version of asekuro.
-``` 
+```
 
 #### Testing a Notebook 
 
@@ -64,15 +63,15 @@ platform darwin -- Python 3.6.5, pytest-3.6.4, py-1.5.4, pluggy-0.7.1 --
 cachedir: ../../../../../tmp/.pytest_cache
 rootdir: /tmp, inifile:
 plugins: nbval-0.9.1
-collected 6 items                                                                                                                                                                                                                                                   
+collected 6 items																																																													
 
-tmp/testnb-test::ipynb::Cell 0 PASSED                                        [ 16%]
-tmp/testnb-test::ipynb::Cell 1 PASSED                                        [ 33%]
-tmp/testnb-test::ipynb::Cell 2 PASSED                                        [ 50%]
-tmp/testnb-test::ipynb::Cell 3 PASSED                                        [ 66%]
-tmp/testnb-test::ipynb::Cell 4 PASSED                                        [ 83%]
-tmp/testnb-test::ipynb::Cell 5 PASSED                                        [100%]
-============== 6 passed in 1.11 seconds  ==================================================================
+tmp/testnb-test::ipynb::Cell 0 PASSED										 [ 16%]
+tmp/testnb-test::ipynb::Cell 1 PASSED										 [ 33%]
+tmp/testnb-test::ipynb::Cell 2 PASSED										 [ 50%]
+tmp/testnb-test::ipynb::Cell 3 PASSED										 [ 66%]
+tmp/testnb-test::ipynb::Cell 4 PASSED										 [ 83%]
+tmp/testnb-test::ipynb::Cell 5 PASSED										 [100%]
+============== 6 passed in 1.11 seconds	 ==================================================================
 2018-07-30 15:40:05,983 [commandline.py:test_notebook:118] DEBUG - removing temporary testing notebook /tmp/testnb-test.ipynb
 2018-07-30 15:40:05,984 [commandline.py:test_notebook:120] DEBUG - testing done for tests/testnb.ipynb
 ```
@@ -89,5 +88,4 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 
 #### Testing 
 
-You can run some unit tests via `pytest`. Note that we test using local notebooks 
-as well as a docker container. We want the container that is there to break the build. 
+You can run some unit tests via `pytest`.
