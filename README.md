@@ -88,5 +88,4 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 
 #### Testing 
 
-You can run some unit tests via `pytest`. Note that we test using local notebooks 
-as well as a docker container. We want the container that is there to break the build. 
+You can run some unit tests via `pytest`.
