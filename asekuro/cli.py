@@ -3,7 +3,7 @@ import os
 import click
 
 import asekuro
-from asekuro.common import test_notebook, clean_notebook, check_files
+from asekuro.common import test_notebook, clean_notebook, check_clean_notebook, check_files
 
 
 @click.group()
@@ -30,6 +30,14 @@ def clean(files):
         clean_notebook(file)
     click.echo(click.style('All notebooks clean.', fg='green'))
 
+    
+@click.command()
+@click.argument('files', nargs=-1, type=click.Path())
+def isclean(files):
+    "Check if notebooks are clean"
+    for file in files:
+        check_clean_notebook(file)
+    click.echo(click.style("All notebooks are clean.", fg='green'))
 
 @click.command(help='Check notebook files independently.')
 @click.argument('files', nargs=-1, type=click.Path())
@@ -61,6 +69,7 @@ def check(ipynb_file, py_file, prefix, verbose):
 
 main.add_command(version)
 main.add_command(clean)
+main.add_command(isclean)
 main.add_command(test)
 main.add_command(check)
 

@@ -61,6 +61,22 @@ def _strip_output(nb):
             cell['execution_count'] = None
     return nb
 
+def _check_output(nb):
+    """
+    Give it a notebook and it will check whether it has output cells.
+    :param nb: Jupyter Notebook Object
+    :return: bool
+    """
+    nb.metadata.pop('signature', None)
+    output = False
+    for cell in _cells(nb):
+        if 'outputs' in cell:
+            if cell['outputs'] != []:
+                output = True
+        if 'execution_count' in cell:
+            if cell['execution_count'] != None:
+                output = True
+    return output
 
 def _testfile(nbpath):
     """
@@ -88,6 +104,16 @@ def clean_notebook(nbpath):
             nbformat.write(notebook, f)
         logger.info(f"{path} is now stripped")
 
+def check_clean_notebook(nbpath):
+    found_paths = nbpath if isinstance(nbpath, list) else [nbpath]
+    for path in found_paths:
+        logger.info(f"Checking if {path} has output")
+        with open(path, 'r') as f:
+            notebook = nbformat.read(f, as_version=nbformat.NO_CONVERT)
+        output = _check_output(notebook)
+        if output:
+            click.echo(click.style(f"{path} has output.", fg='red'))
+            sys.exit(2)
 
 def make_testable_notebook(nbpath, remove_meta=True):
     """

@@ -44,6 +44,7 @@ Options:
 Commands:
   check	   Check notebook file by following it with a python file with a python file with assert statements.
   clean	   Clean notebook files.
+  isclean  Check if notebooks are clean.
   test	   Check notebook files independantly.
   version  Echo the version of asekuro.
 ```
@@ -85,6 +86,12 @@ Sometimes you may want to remove the output of the cells. This can be done autom
 > asekuro clean tests/testnb.ipynb 
 2018-07-30 15:44:23,508 [commandline.py:clean_notebook:76] DEBUG - about to strip tests/testnb.ipynb of output
 2018-07-30 15:44:23,516 [commandline.py:clean_notebook:82] DEBUG - tests/testnb.ipynb is now stripped
+```
+
+You can also just check if a notebook has output without stripping it clean.
+
+```bash
+> asekuro isclean tests/testnb.ipynb 
 ```
 
 #### Testing 
