@@ -31,7 +31,7 @@ def clean(files):
     click.echo(click.style('All notebooks clean.', fg='green'))
 
 
-@click.command(help='Check notebook files independantly.')
+@click.command(help='Check notebook files independently.')
 @click.argument('files', nargs=-1, type=click.Path())
 def test(files):
     home_path = os.getcwd()
