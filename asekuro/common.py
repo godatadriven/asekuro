@@ -142,7 +142,7 @@ def make_testable_notebook(nbpath, remove_meta=True):
                     .replace('%load ', '')
                 )
                 with open(py_path, 'r') as f:
-                    cell['source'] = f.read()
+                    cell['source'] = "# Answer loaded from: " + py_path + "\n" + f.read()
                 logger.info(f'after loading cell content: {cell["source"]}')
     nbformat.write(notebook, open(_testfile(nbpath=nbpath), mode='w'))
     logger.info(f"wrote notebook ready for testing over at {_testfile(nbpath=nbpath)}")
