@@ -16,7 +16,7 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version-file: pyproject.toml
       - name: Install dependencies
         run: pip install .
       - name: Run tests
