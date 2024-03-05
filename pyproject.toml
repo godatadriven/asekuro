@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "asekuro"
+version = "0.5.0"
+description = "CLI util to deal with Jupyter Notebooks"
+authors = ["Vincent D. Warmerdam", "Xebia Data"]
+readme = "README.md"
+license= "MIT License"
+packages = [{include = "asekuro"}]
+classifiers=['Topic :: Software Development :: Build Tools',
+'Topic :: Utilities',
+'Framework :: Jupyter',
+'Intended Audience :: Developers',
+'Intended Audience :: Science/Research',
+'Programming Language :: Python :: 3.6',
+'Development Status :: 3 - Alpha',
+'License :: OSI Approved :: MIT License']
+
+[tool.poetry.urls]
+source = "https://github.com/godatadriven/asekuro"
+
+[tool.poetry.scripts]
+asekuro = "asekuro.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pytest = "^8.0.2"
+nbval = "^0.11.0"
+nbformat = "^5.9.2"
+nbconvert = "^7.16.2"
+click = "^8.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,10 +1,10 @@
 test:
-	pytest
+	poetry run pytest
 
 check: test
 
 deps:
-	pip install -e .
+	poetry install
 
 clean:
 	rm -rf build
@@ -14,7 +14,3 @@ clean:
 	rm -rf dist
 	rm -rf tests/.ipynb_checkpoints
 	rm -rf notebooks/.ipynb_checkpoints
-
-
-develop: deps
-	python setup.py develop
